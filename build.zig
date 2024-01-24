@@ -34,59 +34,7 @@ pub fn build(b: *Build) void {
         rem_unit_tests_run_step.dependOn(&rem_unit_tests_run.step);
     }
 
-    const rem_module = b.addModule("rem", .{ .root_source_file = .{ .path = "rem.zig" } });
-
-    {
-        const html5lib_tokenizer_tests = b.addTest(.{
-            .name = "html5lib-tokenizer-tests",
-            .root_source_file = .{ .path = "test/html5lib-test-tokenizer.zig" },
-            .target = target,
-            .optimize = optimize,
-        });
-        html5lib_tokenizer_tests.root_module.addImport("rem", rem_module);
-        b.installArtifact(html5lib_tokenizer_tests);
-
-        const html5lib_tokenizer_tests_run = b.addRunArtifact(html5lib_tokenizer_tests);
-        html5lib_tokenizer_tests_run.step.dependOn(&html5lib_tokenizer_tests.step);
-
-        const html5lib_tokenizer_tests_run_step = b.step(
-            "test-tokenizer",
-            "Run tokenizer tests from html5lib-tests (requires 0.12.0-dev.91+a155e3585 or newer)",
-        );
-        html5lib_tokenizer_tests_run_step.dependOn(&html5lib_tokenizer_tests_run.step);
-    }
-
-    {
-        const html5lib_tree_construction_tests = b.addTest(.{
-            .name = "html5lib-tree-construction-tests",
-            .root_source_file = .{ .path = "test/html5lib-test-tree-construction.zig" },
-            .target = target,
-            .optimize = optimize,
-        });
-        html5lib_tree_construction_tests.root_module.addImport("rem", rem_module);
-        b.installArtifact(html5lib_tree_construction_tests);
-
-        const html5lib_tree_construction_tests_run = b.addRunArtifact(html5lib_tree_construction_tests);
-        html5lib_tree_construction_tests_run.step.dependOn(&html5lib_tree_construction_tests.step);
-
-        const html5lib_tree_construction_tests_run_step = b.step("test-tree-construction", "Run tree construction tests from html5lib-tests");
-        html5lib_tree_construction_tests_run_step.dependOn(&html5lib_tree_construction_tests_run.step);
-    }
-
-    {
-        const example = b.addExecutable(.{
-            .name = "example",
-            .root_source_file = .{ .path = "./example.zig" },
-            .target = target,
-            .optimize = optimize,
-        });
-        example.root_module.addImport("rem", rem_module);
-        b.installArtifact(example);
-
-        const example_run = b.addRunArtifact(example);
-        const example_run_step = b.step("example", "Run an example program");
-        example_run_step.dependOn(&example_run.step);
-    }
+    b.addModule("rem", .{ .source_file = .{ .path = "rem.zig" } });
 
     {
         const json_data = b.pathFromRoot("tools/character_reference_data.json");
