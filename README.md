@@ -1,6 +1,8 @@
 # rem
 rem is an HTML5 parser written in [Zig](https://ziglang.org).
 
+***THIS IS A FORK; THE ORIGINAL IS [HERE](https://github.com/chadwain/rem)***
+
 ## About
 ### Features
 - [x] An HTML5 parser consisting of a tokenizer (complete) and a tree constructor (works "well enough")
@@ -22,9 +24,21 @@ rem is an HTML5 parser written in [Zig](https://ziglang.org).
 rem is still a work in progress. Not all the features of a fully-capable HTML5 parser are implemented.
 
 ## Get the code
-Clone the repository like this:
+Add this to your `build.zig.zon`:
 ```
-git clone --recursive --config core.autocrlf=false https://github.com/chadwain/rem.git
+.rem = .{
+    .url = "https://github.com/ThePuzzledDev/rem/archive/a7f7e09b537271eada78706f0f45a50b611bf404.tar.gz",
+    .hash = "12200634073b7deb3367bd28a9d228d0682b22e335acc54b3a129576111b3a24ae85",
+}
+```
+
+Add this to your `build.zig`:
+```
+const rem = b.dependency("rem", .{
+    .target = target,
+    .optimize = optimize,
+});
+exe.addModule("rem", rem.module("rem"));
 ```
 
 There are no dependencies other than a Zig compiler. Note that this library is only compatible with Zig version 0.11.0 or newer.
